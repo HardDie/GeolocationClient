@@ -22,7 +22,7 @@ class Dialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit Dialog(QWidget *parent = 0);
+	explicit Dialog( QWidget *parent = 0 );
 	~Dialog();
 
 private:
@@ -52,11 +52,12 @@ private:
 	QString				userName;
 
 	void InitLayouts();
+	bool CheckIP( const char* ip );
 
 private slots:
 	void SlotSendMsg();
 	void SlotStartStopSend();
-	void SlotPositionUpdated(const QGeoPositionInfo &info);
+	void SlotPositionUpdated( const QGeoPositionInfo &info );
 	void SlotSettings();
 	void SlotMainMenu();
 	void SlotApply();
