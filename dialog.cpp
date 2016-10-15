@@ -39,6 +39,13 @@ Dialog::~Dialog()
 	delete ui;
 }
 
+/*
+====================
+InitLayouts
+
+	Инициализирует все обьекты, инициализирует виджеты и слои
+====================
+*/
 void Dialog::InitLayouts() {
 			// Создание виджета для главного меню
 		buttonStartStopSend = new QPushButton( "Start send" );
@@ -93,6 +100,13 @@ void Dialog::InitLayouts() {
 		setLayout( layoutMain );
 }
 
+/*
+====================
+SlotSendMsg
+
+	Отправляет данные на сервер
+====================
+*/
 void Dialog::SlotSendMsg() {
 	char sendStr[1000];
 	strcpy( sendStr, currentLocation );
@@ -100,10 +114,24 @@ void Dialog::SlotSendMsg() {
 	socketClient->writeDatagram( sendStr, strlen( sendStr ) + 1, QHostAddress( lineIp->text() ), 3000 );
 }
 
+/*
+====================
+SlotPositionUpdated
+
+	Считвает данные с GPS датчика и заносит их в поле класса
+====================
+*/
 void Dialog::SlotPositionUpdated( const QGeoPositionInfo &info ) {
 	sprintf( currentLocation, "%s\n%s", lineName->text().toStdString().c_str(), info.coordinate().toString().toStdString().c_str() );
 }
 
+/*
+====================
+SlotStartStopSend
+
+	Включает/отключает отправку сообщений на сервер
+====================
+*/
 void Dialog::SlotStartStopSend() {
 	if ( buttonStartStopSend->text() == "Start send" ) {
 		buttonStartStopSend->setText( "Stop send" );
@@ -114,16 +142,37 @@ void Dialog::SlotStartStopSend() {
 	}
 }
 
+/*
+====================
+SlotMainMenu
+
+	Включает виджет настроек
+====================
+*/
 void Dialog::SlotSettings() {
 	stackedWidget->setCurrentIndex( 1 );
 	lineIp->setText( ipAddress );
 	lineName->setText( userName );
 }
 
+/*
+====================
+SlotMainMenu
+
+	Включает виджет главное меню
+====================
+*/
 void Dialog::SlotMainMenu() {
 	stackedWidget->setCurrentIndex( 0 );
 }
 
+/*
+====================
+SlotApply
+
+	Делает проверку IP адресса и если он верный записывает в поля класса IP и userName
+====================
+*/
 void Dialog::SlotApply() {
 	if ( CheckIP( lineIp->text().toStdString().c_str() ) ) {
 		QMessageBox *errorMsg = new QMessageBox();
@@ -135,6 +184,13 @@ void Dialog::SlotApply() {
 	userName = lineName->text();
 }
 
+/*
+====================
+CheckIP
+
+	Проверяет верность IP адреса, в слуаче верного IP адреса возвращается false, иначе true
+====================
+*/
 bool Dialog::CheckIP( const char* ip ) {
 
 	if ( strcmp( ip, "localhost" ) == 0 ) {
