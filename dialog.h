@@ -48,6 +48,8 @@ private:
 	QGeoCoordinate	*	geoCoordinate;
 
 	char				currentLocation[1000];
+	QString				ipAddress;
+	QString				userName;
 
 	void InitLayouts();
 
@@ -57,6 +59,7 @@ private slots:
 	void SlotPositionUpdated(const QGeoPositionInfo &info);
 	void SlotSettings();
 	void SlotMainMenu();
+	void SlotApply();
 };
 
 #endif // DIALOG_H

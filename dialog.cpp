@@ -10,6 +10,9 @@ Dialog::Dialog(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog) {
 	timerSendMsg->setInterval( 1000 );
 	// UDP Сокет
 	socketClient = new QUdpSocket();
+	// IP и UserName
+	ipAddress = "192.168.1.1";
+	userName = "Default";
 
 
 		// Создание обьекта для отслеживания геопозиции и привязка его обновления к слоту
@@ -23,6 +26,7 @@ Dialog::Dialog(QWidget *parent) : QDialog(parent), ui(new Ui::Dialog) {
 	connect( buttonStartStopSend, SIGNAL( clicked(bool) ), this, SLOT( SlotStartStopSend() ) );
 	connect( buttonSettings, SIGNAL( clicked(bool) ), this, SLOT( SlotSettings() ) );
 	connect( buttonMainMenu, SIGNAL( clicked(bool) ), this, SLOT( SlotMainMenu() ) );
+	connect( buttonApply, SIGNAL( clicked(bool) ), this, SLOT( SlotApply() ) );
 
 		// Подключаем таймер к слоту
 	connect( timerSendMsg, SIGNAL( timeout() ), this, SLOT( SlotSendMsg() ) );
@@ -52,12 +56,12 @@ void Dialog::InitLayouts() {
 		buttonMainMenu = new QPushButton( "Main menu" );
 
 		QRegExp ipExp( "[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}" );
-		lineIp = new QLineEdit( "192.168.1.1" );
+		lineIp = new QLineEdit;
 		lineIp->setValidator( new QRegExpValidator( ipExp, this ) );
 		labelIp = new QLabel( "Enter IP" );
 
 		QRegExp nameExp( "[0-9A-Za-z]{1,30}" );
-		lineName = new QLineEdit( "Default" );
+		lineName = new QLineEdit;
 		lineName->setValidator( new QRegExpValidator( nameExp, this ) );
 		labelName = new QLabel( "Enter Name" );
 
@@ -112,8 +116,15 @@ void Dialog::SlotStartStopSend() {
 
 void Dialog::SlotSettings() {
 	stackedWidget->setCurrentIndex( 1 );
+	lineIp->setText( ipAddress );
+	lineName->setText( userName );
 }
 
 void Dialog::SlotMainMenu() {
 	stackedWidget->setCurrentIndex( 0 );
+}
+
+void Dialog::SlotApply() {
+	ipAddress = lineIp->text();
+	userName = lineName->text();
 }
