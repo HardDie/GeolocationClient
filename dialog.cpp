@@ -50,9 +50,15 @@ void Dialog::InitLayouts() {
 			// Создание виджета для настроек
 		buttonApply = new QPushButton( "Apply" );
 		buttonMainMenu = new QPushButton( "Main menu" );
+
+		QRegExp ipExp( "[0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}[.][0-9]{1,3}" );
 		lineIp = new QLineEdit( "192.168.1.1" );
+		lineIp->setValidator( new QRegExpValidator( ipExp, this ) );
 		labelIp = new QLabel( "Enter IP" );
+
+		QRegExp nameExp( "[0-9A-Za-z]{1,30}" );
 		lineName = new QLineEdit( "Default" );
+		lineName->setValidator( new QRegExpValidator( nameExp, this ) );
 		labelName = new QLabel( "Enter Name" );
 
 		QWidget* settings = new QWidget;
